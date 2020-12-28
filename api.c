@@ -13,11 +13,6 @@ int check(const char *data, int len)
 
   if (cnt >= 3) {
     switch (data[3]) {
-      case '0': {
-        // segv
-        int *p = NULL; *p = 123;
-        break;
-      }
       case '1': {
         // stack-buffer-underflow
         int* p = &cnt - 32; for (int i = 0; i < 32; i++) { *(p + i) = 0; }
@@ -41,16 +36,6 @@ int check(const char *data, int len)
       case '5': {
         // heap-use-after-free
         int* p = malloc(sizeof(int)); free(p); *p = 123;
-        break;
-      }
-      case '6': {
-        // heap-buffer-overflow
-        int* p = malloc(8 * sizeof(int)); for (int i = 0; i < 32; i++) { *(p + i) = 0; }
-        break;
-      }
-      case '7': {
-        // fpe
-        int x = 0; int y = 123 / x;
         break;
       }
     }
